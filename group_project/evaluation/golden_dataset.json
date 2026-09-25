@@ -1,0 +1,82 @@
+[
+  {
+    "question": "Để đạt học bổng khuyến khích học tập loại Xuất sắc, sinh viên cần đáp ứng điều kiện gì về điểm GPA và điểm rèn luyện?",
+    "expected_answer": "Sinh viên cần có điểm trung bình chung học tập (GPA) học kỳ đạt từ 3.60 đến 4.00 và điểm rèn luyện đạt từ 90 đến 100 điểm (xếp loại Xuất sắc), đồng thời tích lũy tối thiểu 14 tín chỉ trong kỳ và không có học phần nào bị điểm F hoặc dưới C.",
+    "expected_context": "Hoc bong loai Xuat sac: GPA hoc ky dat tu 3.60 den 4.00. Diem ren luyen dat tu 90 den 100 diem (Xep loai Xuat sac). Muc hoc bong: 150% muc hoc phi tieu chuan cua hoc ky (tuong duong 18.000.000 dong/ky)."
+  },
+  {
+    "question": "Mức tiền thưởng học bổng khuyến khích học tập loại Giỏi là bao nhiêu tiền một học kỳ?",
+    "expected_answer": "Mức học bổng loại Giỏi là 120% mức học phí tiêu chuẩn của học kỳ, tương đương 14.400.000 đồng/học kỳ.",
+    "expected_context": "Hoc bong loai Gioi: GPA hoc ky dat tu 3.20 den 3.59. Diem ren luyen dat tu 80 den 89 diem (Xep loai Tot). Muc hoc bong: 120% muc hoc phi tieu chuan cua hoc ky (tuong duong 14.400.000 dong/ky)."
+  },
+  {
+    "question": "Khối lượng học tập tối thiểu và tối đa sinh viên được đăng ký trong một học kỳ chính là bao nhiêu tín chỉ?",
+    "expected_answer": "Khối lượng học tập tối thiểu cho một học kỳ chính là 14 tín chỉ (trừ học kỳ cuối). Khối lượng tối đa là 24 tín chỉ đối với sinh viên có học lực bình thường và 18 tín chỉ đối với sinh viên đang bị cảnh báo học tập.",
+    "expected_context": "Khoi luong hoc tap toi thieu cho mot hoc ky chinh la 14 tin chi (tru hoc ky cuoi cua khoa hoc). Khoi luong hoc tap toi da cho mot hoc ky chinh la 24 tin chi doi voi sinh vien co hoc luc Binh thuong va 18 tin chi doi voi sinh vien dang bi canh bao hoc tap."
+  },
+  {
+    "question": "Sinh viên có thể rút học phần đã đăng ký trong thời gian nào và có được hoàn trả học phí không?",
+    "expected_answer": "Sinh viên có quyền rút học phần đã đăng ký trong vòng 2 tuần đầu tiên của học kỳ chính và không được hoàn lại học phí.",
+    "expected_context": "Sinh vien co quyen rut hoc phan da dang ky trong vong 2 tuan dau tien cua hoc ky chinh va khong duoc hoan lai hoc phi."
+  },
+  {
+    "question": "Sinh viên nghỉ học bao nhiêu phần trăm số tiết thì bị cấm thi kết thúc học phần?",
+    "expected_answer": "Sinh viên nghỉ quá 20% số tiết học của học phần (điểm danh không đạt trên 80%) sẽ bị cấm thi học phần đó và nhận điểm F.",
+    "expected_context": "Diem danh tren lop bat buoc phai dat tren 80% so tiet hoc; sinh vien nghi qua 20% so tiet se bi cam thi hoc phan do va nhan diem F."
+  },
+  {
+    "question": "Trường hợp nào sinh viên bị áp dụng cảnh báo học tập mức 2?",
+    "expected_answer": "Cảnh báo học tập mức 2 được áp dụng khi sinh viên bị cảnh báo học tập mức 1 ở hai học kỳ liên tiếp.",
+    "expected_context": "Canh bao hoc tap muc 2: Ap dung khi sinh vien bi canh bao hoc tap muc 1 o hai hoc ky lien tiep."
+  },
+  {
+    "question": "Những đối tượng sinh viên nào được miễn 100% học phí theo quy định?",
+    "expected_answer": "Sinh viên được miễn 100% học phí bao gồm: con của Liệt sĩ, con Thương binh, con Bệnh binh mất sức lao động từ 81% trở lên; sinh viên khuyết tật nặng hoặc đặc biệt nặng; sinh viên mồ côi cả cha lẫn mẹ không nơi nương tựa; và sinh viên người dân tộc thiểu số rất ít người ở vùng đặc biệt khó khăn theo Nghị định 81/2021/NĐ-CP.",
+    "expected_context": "Doi tuong duoc mien 100% hoc phi: Sinh vien la con cua Liet si, con cua Thuong binh, con cua Benh binh mat suc lao dong tu 81% tro len; Sinh vien khuyet tat nang hoac dac biet nang; Sinh vien mo coi ca cha lan me, khong noi nuong tua; Sinh vien nguoi dan toc thieu so rat it nguoi o vung co dieu kien kinh te - xa hoi dac biet kho khan theo Nghi dinh 81/2021/ND-CP."
+  },
+  {
+    "question": "Sinh viên là con của cán bộ, công nhân viên chức bị tai nạn lao động được giảm bao nhiêu phần trăm học phí?",
+    "expected_answer": "Sinh viên là con của cán bộ, công nhân, viên chức mà cha hoặc mẹ bị tai nạn lao động hoặc mắc bệnh nghề nghiệp được hưởng trợ cấp thường xuyên được giảm 50% học phí.",
+    "expected_context": "Giam 50% hoc phi doi voi sinh vien la con cua can bo, cong nhan, vien chuc ma cha hoac me bi tai nan lao dong hoac mac benh nghe nghiep duoc huong tro cap thuong xuyen."
+  },
+  {
+    "question": "Thời hạn nộp học phí mỗi học kỳ là bao lâu và nếu không nộp đúng hạn thì bị xử lý như thế nào?",
+    "expected_answer": "Thời hạn nộp học phí là trong vòng 4 tuần đầu tiên kể từ ngày bắt đầu học kỳ chính. Sinh viên không hoàn thành học phí đúng hạn và không có đơn xin gia hạn sẽ bị hủy đăng ký học phần và cấm thi học kỳ đó.",
+    "expected_context": "Thoi han nop hoc phi: Trong vong 4 tuan dau tien ke tu ngay bat dau hoc ky chinh. Sinh vien khong hoan thanh hoc phi dung han va khong co don xin gia han se bi huy dang ky hoc phan va cam thi hoc ky do."
+  },
+  {
+    "question": "Giá thuê phòng ký túc xá loại 4 người khép kín có điều hòa là bao nhiêu tiền một tháng?",
+    "expected_answer": "Giá phòng ký túc xá loại 4 người khép kín có điều hòa và bình nóng lạnh là 1.200.000 đồng/sinh viên/tháng (chưa bao gồm tiền điện nước theo công tơ).",
+    "expected_context": "Phong tieu chuan 4 nguoi co dieu hoa: 1.200.000 dong/sinh vien/thang."
+  },
+  {
+    "question": "Giờ mở cửa và đóng cửa sinh hoạt hàng ngày của Ký túc xá là mấy giờ?",
+    "expected_answer": "Ký túc xá mở cửa từ 05h00 sáng đến 23h00 tối hàng ngày. Sinh viên về muộn phải có lý do chính đáng và xuất trình thẻ sinh viên.",
+    "expected_context": "Gio mo cua KTX: Tu 05h00 sang den 23h00 toi hang ngay. Sinh vien ve muon phai co ly do chinh dang va xuat trinh the sinh vien."
+  },
+  {
+    "question": "Sinh viên tốt nghiệp chương trình chuẩn cần đạt chuẩn đầu ra ngoại ngữ TOEIC tối thiểu bao nhiêu điểm?",
+    "expected_answer": "Sinh viên chương trình chuẩn cần đạt chứng chỉ TOEIC tối thiểu 500 điểm (hoặc IELTS tương đương 5.0, TOEFL iBT 45), chứng chỉ còn hạn trong vòng 2 năm.",
+    "expected_context": "Chuong trinh Cu nhan/Ky su chuan: Chung chi TOEIC 4 ky nang toi thieu 500 diem (hoac IELTS tuong duong 5.0, TOEFL iBT 45). Dat chuan dau ra ngoai ngu (TOEIC toi thieu 500 diem)."
+  },
+  {
+    "question": "Học bổng Tài năng Công nghệ Viettel và Samsung STP có giá trị bao nhiêu và yêu cầu điều kiện gì?",
+    "expected_answer": "Học bổng Viettel có giá trị 50.000.000 VNĐ/suất kèm cam kết thực tập; Học bổng Samsung Talent Program (STP) trị giá 30.000.000 VNĐ/suất cùng khóa đào tạo thuật toán. Yêu cầu sinh viên có CPA từ 3.20 trở lên và điểm rèn luyện từ loại Tốt (>= 80 điểm).",
+    "expected_context": "Hoc bong Tai nang Cong nghe Viettel: 50.000.000 VND/suat; Hoc bong Samsung Talent Program (STP): 30.000.000 VND/suat; Dieu kien nop ho so: CPA tu 3.20 tro len va Diem ren luyen dat tu 80 diem tro len."
+  },
+  {
+    "question": "Sinh viên phải nộp hồ sơ đề nghị miễn giảm học phí trước tuần thứ mấy của học kỳ?",
+    "expected_answer": "Sinh viên phải nộp hồ sơ đề nghị miễn giảm học phí tại Phòng Công tác Sinh viên (hoặc cổng dịch vụ công) trước tuần thứ 3 của mỗi học kỳ.",
+    "expected_context": "Thoi han nop: Sinh vien nop ho so tai Phong Cong tac Sinh vien truoc tuan thu 3 cua moi hoc ky de duoc xet duyet va tru truc tiep vao hoc phi hoc ky."
+  },
+  {
+    "question": "Mức học phí theo năm của trường Đại học Harvard tại Mỹ là bao nhiêu đô la?",
+    "expected_answer": "Tôi không thể xác minh thông tin này từ tài liệu hiện có vì câu hỏi nằm ngoài phạm vi quy chế và dịch vụ của trường.",
+    "expected_context": "Ngoai pham vi tai lieu (Out of domain). He thong ap dung co che fallback hoac safe refusal."
+  },
+  {
+    "question": "Cách nấu phở bò gia truyền Hà Nội cần những nguyên liệu và gia vị gì?",
+    "expected_answer": "Tôi không tìm thấy thông tin hướng dẫn nấu phở bò trong bộ tài liệu quy định và dịch vụ sinh viên.",
+    "expected_context": "Ngoai pham vi tai lieu (Out of domain). He thong ap dung co che fallback hoac safe refusal."
+  }
+]
