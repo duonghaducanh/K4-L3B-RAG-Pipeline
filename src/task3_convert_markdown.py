@@ -1,15 +1,20 @@
 """
 Task 3 — Chuẩn hóa dữ liệu sang Markdown.
 
-Quy trình:
-1. Đọc tài liệu pháp lý (.pdf) từ data/landing/legal/ và convert sang Markdown sạch tại data/standardized/legal/.
-2. Đọc tin tức (.json) từ data/landing/news/ và chuyển đổi có header metadata tại data/standardized/news/.
-3. Đảm bảo cấu trúc rõ ràng, không tạo file rỗng và có độ dài đạt chuẩn.
+Hướng dẫn:
+    1. Dùng MarkItDown để convert PDF/DOCX.
+    2. Đọc JSON và giữ metadata ở đầu file Markdown.
+    3. Giữ cấu trúc thư mục legal/ và news/.
+    4. Không tạo file rỗng hoặc file trùng khi chạy lại.
+
+Cài đặt:
+    Dependency MarkItDown đã được khai báo trong pyproject.toml.
+
+-> Hoặc dùng công cụ nào bạn quen khác Markitdown
 """
 
 import json
 from pathlib import Path
-import pypdf
 
 
 LANDING_DIR = Path(__file__).parent.parent / "data" / "landing"
@@ -17,63 +22,73 @@ OUTPUT_DIR = Path(__file__).parent.parent / "data" / "standardized"
 
 
 def convert_legal_docs() -> None:
-    """Convert PDF tài liệu pháp quy sang Markdown tại data/standardized/legal/."""
+    """Convert PDF/DOCX vào standardized/legal."""
+    from markitdown import MarkItDown
+
     legal_dir = LANDING_DIR / "legal"
     output_dir = OUTPUT_DIR / "legal"
+
+    if not legal_dir.exists() or not any(legal_dir.iterdir()):
+        print(f"No legal documents found in {legal_dir}. Skipping.")
+        return
+
     output_dir.mkdir(parents=True, exist_ok=True)
+    converter = MarkItDown()
 
     for path in sorted(legal_dir.iterdir()):
-        if path.suffix.lower() in {".pdf", ".doc", ".docx"}:
-            reader = pypdf.PdfReader(str(path))
-            pages_text = []
-            for page in reader.pages:
-                extracted = page.extract_text()
-                if extracted:
-                    pages_text.append(extracted.strip())
-            
-            raw_text = "\n\n".join(pages_text)
-            
-            # Format clean Markdown
-            doc_title = path.stem.replace("_", " ").title()
-            markdown_content = (
-                f"# {doc_title}\n\n"
-                f"**Loại tài liệu:** Văn bản quy định / chính sách\n\n"
-                f"**Nguồn tệp:** `{path.name}`\n\n"
-                f"---\n\n"
-                f"{raw_text}\n"
-            )
-
-            out_file = output_dir / f"{path.stem}.md"
-            out_file.write_text(markdown_content, encoding="utf-8")
-            print(f"Converted legal: {out_file.name} ({len(markdown_content)} chars)")
+        if path.suffix.lower() not in {".pdf", ".doc", ".docx"}:
+            continue
+        dest = output_dir / f"{path.stem}.md"
+        if dest.exists():
+            print(f"Already exists, skipping: {dest.name}")
+            continue
+        print(f"Converting: {path.name}")
+        result = converter.convert(str(path))
+        content = result.text_content.strip()
+        if not content:
+            print(f"WARNING: Empty content for {path.name}, skipping.")
+            continue
+        dest.write_text(content, encoding="utf-8")
+        print(f"Saved: {dest}")
 
 
 def convert_news_articles() -> None:
-    """Convert JSON bài viết sang Markdown tại data/standardized/news/."""
+    """Convert JSON vào standardized/news."""
     news_dir = LANDING_DIR / "news"
     output_dir = OUTPUT_DIR / "news"
+
+    if not news_dir.exists() or not any(news_dir.glob("*.json")):
+        print(f"No news JSON files found in {news_dir}. Skipping.")
+        return
+
     output_dir.mkdir(parents=True, exist_ok=True)
 
     for path in sorted(news_dir.glob("*.json")):
+        dest = output_dir / f"{path.stem}.md"
+        if dest.exists():
+            print(f"Already exists, skipping: {dest.name}")
+            continue
+        print(f"Converting: {path.name}")
         data = json.loads(path.read_text(encoding="utf-8"))
+        content_md = data.get("content_markdown", "").strip()
+        if not content_md:
+            print(f"WARNING: Empty content_markdown in {path.name}, skipping.")
+            continue
         header = (
-            f"# {data['title']}\n\n"
-            f"**Source:** {data['url']}\n\n"
-            f"**Crawled:** {data['date_crawled']}\n\n"
-            f"---\n\n"
+            f"# {data.get('title', 'Untitled')}\n\n"
+            f"**Source:** {data.get('url', '')}\n\n"
+            f"**Crawled:** {data.get('date_crawled', '')}\n\n---\n\n"
         )
-        full_content = header + data["content_markdown"].strip() + "\n"
-        out_file = output_dir / f"{path.stem}.md"
-        out_file.write_text(full_content, encoding="utf-8")
-        print(f"Converted news: {out_file.name} ({len(full_content)} chars)")
+        dest.write_text(header + content_md, encoding="utf-8")
+        print(f"Saved: {dest}")
 
 
 def convert_all() -> None:
-    """Convert toàn bộ dữ liệu landing sang standardized Markdown."""
+    """Convert toàn bộ dữ liệu landing."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     convert_legal_docs()
     convert_news_articles()
-    print(f"Saved Markdown to: {OUTPUT_DIR}")
+    print(f"\nSaved Markdown to: {OUTPUT_DIR}")
 
 
 if __name__ == "__main__":
