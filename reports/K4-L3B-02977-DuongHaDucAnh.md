@@ -69,4 +69,4 @@ Báo cáo ghi nhận quyền sở hữu (ownership) và bằng chứng đóng g�
 Tôi xác nhận nội dung trên phản ánh đúng phần việc của mình và có thể giải thích hoặc chạy lại trong buổi demo.
 
 - Ngày: 25/09/2026
-- Tên thành viên: [Điền họ và tên của bạn]
+- Tên thành viên: Duong Ha Duc Anh
