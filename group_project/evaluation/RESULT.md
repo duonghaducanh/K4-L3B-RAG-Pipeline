@@ -1,66 +1,59 @@
-# RAG evaluation results
+# RAG Evaluation Results (LLM-as-a-Judge Benchmark)
 
 ## Run information
 
-| Field                              | Value |
-| ---------------------------------- | ----- |
-| Evaluation date                    | 2026-09-25 |
-| Framework and version              | Custom offline retrieval benchmark (Python 3.13) |
-| Evaluator model                    | Not used; deterministic lexical proxy |
-| Generator model                    | Not used; retrieval-only run |
-| Embedding model                    | BAAI/bge-m3 (1024 dimensions) |
-| Corpus version/commit              | v1.0-standardized (4 legal PDFs, 5 news JSONs) |
-| Golden dataset size                | 16 Q&A cases (13 in-domain, 3 out-of-domain/fallback) |
-| `top_k`                            | 5 |
-| Fallback threshold and calibration | Cosine score threshold = 0.30 (configured pipeline value) |
+| Field | Value |
+| :--- | :--- |
+| Evaluation date | 2026-09-25 |
+| Framework and version | Custom LLM-as-a-Judge Benchmark (`google-genai`) |
+| Evaluator model | Google Gemini (`gemini-3.5-flash-lite`) |
+| Generator model | Google Gemini (`gemini-3.5-flash-lite`) |
+| Embedding model | BAAI/bge-m3 (1024 dimensions) |
+| Corpus version/commit | v1.0-standardized (4 legal PDFs, 5 news JSONs) |
+| Golden dataset size | 16 Q&A cases (14 in-domain, 2 out-of-domain) |
+| `top_k` | 5 |
+| Fallback threshold and calibration | Cosine score threshold = 0.30 |
 
 ## Configurations
 
-- **Config A — dense-only:** Chỉ sử dụng Semantic Search trên ChromaDB, truy xuất `top_k=5` chunks có cosine similarity cao nhất.
-- **Config B — hybrid + RRF:** Kết hợp Dense Search và Sparse BM25 Search, dung hợp thứ hạng bằng RRF ($k=60$), rồi lấy `top_k=5` chunks.
+- **Config A — dense-only:** Semantic Search trên ChromaDB với cosine similarity, lấy `top_k=5` chunks có điểm cao nhất.
+- **Config B — hybrid + RRF:** Kết hợp Dense Search và Sparse BM25 Search, dung hợp thứ hạng bằng Reciprocal Rank Fusion ($k=60$), lấy `top_k=5` chunks sau khi rerank.
 
-Hai config phải dùng cùng golden dataset, generator, evaluator, prompt và `top_k`; chỉ thay retrieval strategy.
+*Hai cấu hình dùng cùng golden dataset, generator, evaluator prompt, temperature (0.3) và `top_k=5`; chỉ thay đổi retrieval strategy.*
 
 ## Overall scores
 
-| Metric            | Config A | Config B | Delta B−A |
-| ----------------- | -------: | -------: | --------: |
-| Faithfulness      |    0.723 |    0.736 |    +0.013 |
-| Answer relevance  |    0.681 |    0.725 |    +0.044 |
-| Context recall    |    0.426 |    0.333 |    -0.093 |
-| Context precision |    0.048 |    0.040 |    -0.008 |
-| **Average**       |   0.4695 |   0.4584 |   -0.0110 |
+| Metric | Config A (Dense-only) | Config B (Hybrid + RRF) | Delta B−A |
+| :--- | :---: | :---: | :---: |
+| **Faithfulness** | 1.0000 | 1.0000 | +0.0000 |
+| **Answer relevance** | 0.7656 | 0.7562 | -0.0094 |
+| **Context recall** | 0.6969 | 0.5875 | -0.1094 |
+| **Context precision**| 0.5375 | 0.3875 | -0.1500 |
+| **Average** | **0.7500** | **0.6828** | **-0.0672** |
 
-## A/B comparison
+## A/B comparison & Scientific Analysis
 
-- **Kết luận:** Config B cải thiện Faithfulness (+0.013) và Answer Relevance (+0.044), nhưng kém hơn về Context Recall (-0.093), Context Precision (-0.008) và Average (-0.0110) trong lần chạy này.
-- **Cách đo:** `evaluate_metrics.py` chạy cả 16 câu, lấy context thực tế từ retriever và tính coverage token Unicode. Đây là proxy offline, không phải điểm Ragas/LLM.
-- **Evidence:**
-  - Ở các truy vấn chứa từ khóa chuyên môn hẹp, con số định lượng hoặc mã văn bản pháp lý (ví dụ: *"TOEIC 500"*, *"CPA 3.60"*, *"Nghị định 81/2021/NĐ-CP"*, *"phòng 4 người 1.200.000 đồng"*), phương pháp Dense-only thường bị phân tán ngữ nghĩa vào các đoạn giới thiệu chung về trường hoặc quy chế đào tạo nói chung. Trong khi đó, nhánh BM25 bắt chính xác 100% từ khóa cốt lõi.
-  - Thuật toán RRF đã cộng hưởng thành công: đưa các đoạn văn vừa đúng từ khóa vừa tương đồng ngữ nghĩa lên vị trí Top 1–Top 2, giúp LLM nhận được đúng bằng chứng để tổng hợp câu trả lời chính xác, nâng Faithfulness từ 0.852 lên 0.924.
-- **Trade-off về latency/cost:**
-  - *Độ trễ (Latency):* Lần chạy ghi nhận Dense **36.83s/16 queries** và Hybrid **3.71s/16 queries**; Dense bao gồm thời gian khởi tạo model embedding.
-  - *Chi phí (Cost):* Không phát sinh chi phí LLM trong benchmark offline.
+- **Nhận định chung:** Cả hai cấu hình đều đạt điểm **Faithfulness tuyệt đối (1.0000)** do mô hình Generator tuân thủ nghiêm ngặt chỉ dẫn hệ thống (System Prompt): chỉ trả lời từ context và thực hiện Safe Refusal khi thiếu dữ liệu hoặc câu hỏi out-of-domain.
+- **Phân tích hiện tượng Config B (Hybrid) thấp điểm hơn Config A (Dense):**
+  1. *Đặc thù corpus quy mô nhỏ:* Tập dữ liệu chỉ gồm 9 tài liệu ngắn (~20–30 chunks). Phân phối tần suất từ vựng bị hẹp khiến BM25 dễ gặp hiện tượng bão hòa IDF đối với các từ khóa phổ biến (ví dụ: "sinh viên", "học bổng", "quy định", "học kỳ").
+  2. *Nhiễu từ khóa trong RRF:* Khi người dùng hỏi một câu có nhiều từ phổ biến, BM25 trả về các chunk chứa các từ này nhưng không mang câu trả lời đúng. Thuật toán RRF ($k=60$) khi cộng dồn thứ hạng vô tình đẩy 1–2 chunk từ BM25 vào Top 5, trực tiếp chiếm chỗ của các chunk ngữ nghĩa chính xác từ nhánh Dense.
+  3. *Hệ quả:* Context Precision ở Config B bị giảm từ `0.5375` xuống `0.3875` (-0.1500), kéo theo Context Recall giảm từ `0.6969` xuống `0.5875` (-0.1094).
+- **Trade-off thực tế:**
+  - *Khi nào nên dùng Dense:* Tập dữ liệu quy mô nhỏ, câu hỏi mang tính diễn giải ngữ nghĩa rộng hoặc khái niệm tổng quát.
+  - *Khi nào nên dùng Hybrid:* Tập dữ liệu lớn hoặc truy vấn chứa các mã định danh/tên riêng biệt lập (như "STP", "MOS", "Nghị định 81/2021/NĐ-CP").
 
 ## Worst performers
 
-|   # | Question | Config | Faithfulness | Relevance | Recall | Precision | Failure stage             | Root cause |
-| --: | -------- | ------ | -----------: | --------: | -----: | --------: | ------------------------- | ---------- |
-|   1 | Học bổng Tài năng Công nghệ Viettel và Samsung STP có giá trị bao nhiêu và yêu cầu điều kiện gì? | Config A | 0.70 | 0.72 | 0.65 | 0.60 | retrieval | Dense retriever bị thiên lệch về các đoạn văn quy chế học bổng khuyến khích học tập chung thay vì bài thông báo hợp tác tài trợ doanh nghiệp, làm rớt thông tin mức thưởng Viettel 50 triệu. |
-|   2 | Sinh viên tốt nghiệp chương trình chuẩn cần đạt chuẩn đầu ra ngoại ngữ TOEIC tối thiểu bao nhiêu điểm? | Config A | 0.80 | 0.78 | 0.70 | 0.68 | retrieval | Thông tin bị phân mảnh giữa Quy chế đào tạo (nêu chung về chuẩn ngoại ngữ) và Thông báo chi tiết (nêu rõ TOEIC 500). Dense chỉ lấy được 1 chunk quy chế chung. |
-|   3 | Sinh viên phải nộp hồ sơ đề nghị miễn giảm học phí trước tuần thứ mấy của học kỳ? | Config B | 0.88 | 0.82 | 0.85 | 0.75 | generation | Ngữ cảnh trả về chứa cả 2 mốc thời gian: "tuần thứ 3" (trong quy định chung) và "ngày 10/10/2024" (trong thông báo đợt 1). Generator tổng hợp chưa phân biệt rõ giữa quy chế khung và thông báo niên khóa. |
+| # | Question | Config | Faithfulness | Relevance | Recall | Precision | Failure stage | Root cause |
+| --: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| 1 | Học bổng Tài năng Công nghệ Viettel và Samsung STP có giá trị bao nhiêu và yêu cầu điều kiện gì? | Config B | 1.00 | 0.70 | 0.50 | 0.30 | Retrieval (RRF) | Từ khóa "học bổng", "tài năng" khiến BM25 kéo chunk của học bổng khuyến khích học tập vào top 2, làm loãng ngữ cảnh bài thông báo doanh nghiệp. |
+| 2 | Giờ mở cửa và đóng cửa sinh hoạt hàng ngày của Ký túc xá là mấy giờ? | Config B | 1.00 | 0.75 | 0.50 | 0.40 | Retrieval (BM25 noise) | BM25 bắt từ "ký túc xá" từ văn bản giá phòng và kế hoạch tiếp nhận tân sinh viên, đẩy chunk chứa nội quy giờ giấc xuống cuối danh sách. |
+| 3 | Mức học phí theo năm của trường Đại học Harvard tại Mỹ là bao nhiêu đô la? | Cả 2 Config | 1.00 | 0.50 | 0.00 | 0.00 | Retrieval (Expected) | Câu hỏi Out-of-domain. Retrieval không tìm thấy context hợp lệ (Recall/Precision = 0), tuy nhiên Generator kích hoạt Safe Refusal chính xác (Faithfulness = 1.0). |
 
 ## Recommendations
 
 | Priority | Action | Evidence from failure analysis | Expected impact | How to verify |
-| -------: | ------ | ------------------------------ | --------------- | ------------- |
-|        1 | Bổ sung mô hình Cross-Encoder Reranker (ví dụ `bge-reranker-base`) sau bước RRF | Worst Performer #1 và #2 cho thấy RRF đôi khi vẫn giữ lại các chunk tương tự nhưng thiếu chi tiết quyết định | Tăng Context Precision lên > 0.90 và loại bỏ hoàn toàn các chunk nhiễu khỏi Top 3 | Đo lại Context Precision trên Golden Dataset 16 câu và so sánh phân vị xếp hạng của chunk mang ground truth |
-|        2 | Áp dụng Metadata Filtering (theo trường `doc_type`: legal vs news) trước khi search | Case #3 cho thấy sự xung đột giữa văn bản quy định dài hạn (khung chính sách) và bài báo thời vụ (thông báo theo đợt) | Tránh xung đột mốc thời gian, tăng Answer Relevance và độ nhất quán của câu trả lời | Chạy test case #3 với bộ lọc `doc_type="legal"` và kiểm tra độ chính xác của câu trả lời sinh ra |
-|        3 | Cải tiến Prompt Generator: Hướng dẫn phân giải xung đột thông tin và trích dẫn theo niên hạn | Generator ở Case #3 không tự giải thích được mốc thời gian nào là mốc dài hạn, mốc nào áp dụng riêng cho kỳ hiện tại | Nâng Faithfulness và giảm thiểu ảo giác (hallucination) khi có nhiều mốc thời gian xuất hiện trong context | Đánh giá lại tiêu chí Faithfulness của LLM Evaluator trên các câu hỏi liên quan đến lịch trình/hạn nộp |
-
-## Bonus experiments
-
-| Experiment | Baseline | Metric delta | Latency/cost delta | Conclusion |
-| ---------- | -------- | -----------: | -----------------: | ---------- |
-| Query Expansion (HyDE) | Config B (Hybrid + RRF) | Recall +2.2%, Precision -1.1% | +380ms latency, +350 prompt tokens | Hữu ích cho các truy vấn quá ngắn (dưới 5 từ), nhưng làm tăng đáng kể độ trễ do phải gọi LLM sinh giả định văn bản trước khi truy xuất. |
-| BGE Reranker v2 | Config B (Hybrid + RRF) | Precision +4.6%, Faithfulness +2.1% | +110ms latency, 0 token cost | Cực kỳ hiệu quả: Reranker loại bỏ triệt để các chunk rác ở vị trí 3-4, nâng cao chất lượng ngữ cảnh đưa vào LLM với chi phí độ trễ rất thấp. |
+| :---: | :--- | :--- | :--- | :--- |
+| 1 | **Tăng hệ số RRF constant $k$ (từ 60 lên 100) hoặc gán trọng số ưu tiên Dense** | RRF $k=60$ hiện tại cho trọng số BM25 quá lớn trên tập dữ liệu nhỏ, đẩy các chunk nhiễu vào top context | Giảm trọng số của BM25 khi corpus nhỏ, kéo Context Precision tăng lại > 0.50 | Chạy lại `evaluate_llm.py` với cấu hình $k=100$ và so sánh metric delta |
+| 2 | **Áp dụng Cross-Encoder Reranker thay vì chỉ dùng RRF thứ hạng** | RRF chỉ dựa trên vị trí danh sách mà không hiểu ngữ nghĩa thực sự của chunk | Loại bỏ triệt để các chunk chứa từ khóa trùng nhưng sai ý nghĩa trước khi đưa vào LLM | Tích hợp `bge-reranker-base` vào Task 7 và đo lại Context Precision |
+| 3 | **Tách biệt bộ test OOD khi đo lường chất lượng Retrieval** | Câu 15 & 16 (ngoài miền) luôn có Recall = 0 làm sai lệch giá trị trung bình của toàn hệ thống | Phản ánh chính xác 100% năng lực truy xuất của các câu hỏi in-domain | Tách báo cáo thành 2 bảng: In-Domain Retrieval Metrics và Out-of-Domain Safety Rate |
