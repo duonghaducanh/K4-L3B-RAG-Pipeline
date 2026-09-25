@@ -6,8 +6,8 @@ Báo cáo ghi nhận quyền sở hữu (ownership) và bằng chứng đóng g�
 
 ## Thông tin
 
-- Họ và tên: [Họ và Tên của bạn]
-- Mã học viên: [Mã học viên của bạn]
+- Họ và tên: Tạ Đăng Dương
+- Mã học viên: 2A202603018
 - Nhóm: solobolero
 - Repository/branch: `duong`
 - Phân công đảm nhiệm: **Mục tiêu 4 — Đánh giá chất lượng & Benchmarking (LLM-as-a-Judge Evaluation & QA)**
