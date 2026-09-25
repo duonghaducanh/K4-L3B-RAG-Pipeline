@@ -47,9 +47,10 @@ Báo cáo ghi nhận quyền sở hữu (ownership) và bằng chứng đóng g�
   ```
   Kết quả: **5/5 tests PASSED** (đầy đủ legal docs, news json, standardized markdown, 16 golden cases, và evaluation report không còn TODO).
 - **Kết quả thực nghiệm trước/sau (A/B testing):**
-  - **Config A (Dense-only):** Điểm trung bình 4 metrics đạt `0.806` (Recall: 0.781, Precision: 0.765).
-  - **Config B (Hybrid + RRF):** Điểm trung bình đạt `0.8935` (Recall: 0.887, Precision: 0.868).
-  - **Mức cải thiện (Delta B - A):** Tăng **+8.75%** điểm trung bình toàn diện, chứng minh việc bổ sung BM25 và RRF giúp bắt trúng các thực thể số và mã văn bản quan trọng.
+  - **Config A (Dense-only):** Điểm trung bình proxy đạt `0.4695` (Recall: 0.426, Precision: 0.048).
+  - **Config B (Hybrid + RRF):** Điểm trung bình proxy đạt `0.4584` (Recall: 0.333, Precision: 0.040).
+  - **Mức cải thiện (Delta B - A):** `-0.0110`; hybrid tăng Faithfulness `+0.013` và Answer Relevance `+0.044`, nhưng giảm Context Recall `-0.093` và Context Precision `-0.008`.
+  - **Phạm vi đo:** 16 câu, `top_k=5`, coverage token Unicode từ context thực tế; không gọi LLM evaluator vì môi trường chưa có API key.
 - **Lỗi đã phát hiện và xử lý:**
   - Phát hiện trường hợp câu hỏi về hạn nộp hồ sơ bị xung đột giữa mốc thời gian của Quy chế chung ("trước tuần thứ 3") và Thông báo năm học ("trước ngày 10/10").
   - Đã phân tích nguyên nhân gốc (Root cause) trong mục *Worst Performers* và đưa ra khuyến nghị áp dụng Metadata Filtering theo `doc_type` để xử lý triệt để.

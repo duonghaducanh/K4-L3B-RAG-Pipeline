@@ -11,12 +11,14 @@ Hỗ trợ so sánh A/B giữa Config A (Dense-only) và Config B (Hybrid + RRF)
 """
 
 import json
+import re
 import time
 from pathlib import Path
 
 
 ROOT = Path(__file__).parent.parent
 GOLDEN_PATH = ROOT / "group_project" / "evaluation" / "golden_dataset.json"
+EVALUATION_TOP_K = 5
 
 
 def load_golden_dataset() -> list[dict]:
@@ -37,6 +39,32 @@ def calculate_lexical_overlap(prediction: str, ground_truth: str) -> float:
     return len(intersection) / len(union)
 
 
+def _tokens(text: str) -> set[str]:
+    """Tokenize Unicode text consistently for the offline benchmark."""
+    return set(re.findall(r"\w+", text.lower(), flags=re.UNICODE))
+
+
+def _coverage(source: str, target: str) -> float:
+    source_tokens = _tokens(source)
+    target_tokens = _tokens(target)
+    if not source_tokens:
+        return 0.0
+    return len(source_tokens & target_tokens) / len(source_tokens)
+
+
+def _score_case(item: dict, results: list[dict]) -> dict[str, float]:
+    context = "\n".join(result["content"] for result in results)
+    expected_context = item["expected_context"]
+    expected_answer = item["expected_answer"]
+    question = item["question"]
+    return {
+        "faithfulness": _coverage(expected_answer, context),
+        "answer_relevance": _coverage(question, context),
+        "context_recall": _coverage(expected_context, context),
+        "context_precision": _coverage(context, expected_context),
+    }
+
+
 import sys
 
 # Ensure UTF-8 output on Windows console
@@ -54,33 +82,32 @@ def run_benchmark(strategy: str = "hybrid") -> dict:
     dataset = load_golden_dataset()
     print(f"\n--- Danh gia cau hinh: {strategy.upper()} ({len(dataset)} cau hoi) ---")
 
-    has_pipeline = False
-    try:
-        from src.task9_retrieval_pipeline import retrieve
-        from src.task10_generation import generate_with_citation
-        has_pipeline = True
-    except (ImportError, NotImplementedError):
-        has_pipeline = False
+    from src.task5_semantic_search import semantic_search
+    from src.task9_retrieval_pipeline import retrieve
 
-    scores = {
-        "faithfulness": 0.924 if strategy == "hybrid" else 0.852,
-        "answer_relevance": 0.895 if strategy == "hybrid" else 0.826,
-        "context_recall": 0.887 if strategy == "hybrid" else 0.781,
-        "context_precision": 0.868 if strategy == "hybrid" else 0.765,
-    }
+    scores = {name: 0.0 for name in (
+        "faithfulness",
+        "answer_relevance",
+        "context_recall",
+        "context_precision",
+    )}
 
     start_time = time.time()
     for index, item in enumerate(dataset, 1):
         q = item["question"]
-        if has_pipeline:
-            try:
-                gen_res = generate_with_citation(q)
-                ans = gen_res.get("answer", "")
-            except Exception:
-                pass
+        results = (
+            semantic_search(q, top_k=EVALUATION_TOP_K)
+            if strategy == "dense"
+            else retrieve(q, top_k=EVALUATION_TOP_K, use_reranking=True)
+        )
+        case_scores = _score_case(item, results)
+        for metric, value in case_scores.items():
+            scores[metric] += value
         # In tien trinh
         safe_q = q[:45].encode("ascii", "replace").decode("ascii")
         print(f"[{index:02d}/{len(dataset)}] Processing: {safe_q}...")
+
+    scores = {metric: value / len(dataset) for metric, value in scores.items()}
 
     elapsed = time.time() - start_time
     avg_score = sum(scores.values()) / len(scores)

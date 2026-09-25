@@ -4,20 +4,20 @@
 
 | Field                              | Value |
 | ---------------------------------- | ----- |
-| Evaluation date                    | 2024-10-15 |
-| Framework and version              | Ragas 0.2.2 / Custom Benchmark Harness (Python 3.13) |
-| Evaluator model                    | gpt-4o-mini |
-| Generator model                    | gpt-4o-mini |
+| Evaluation date                    | 2026-09-25 |
+| Framework and version              | Custom offline retrieval benchmark (Python 3.13) |
+| Evaluator model                    | Not used; deterministic lexical proxy |
+| Generator model                    | Not used; retrieval-only run |
 | Embedding model                    | BAAI/bge-m3 (1024 dimensions) |
 | Corpus version/commit              | v1.0-standardized (4 legal PDFs, 5 news JSONs) |
 | Golden dataset size                | 16 Q&A cases (13 in-domain, 3 out-of-domain/fallback) |
-| `top_k`                            | 4 |
-| Fallback threshold and calibration | Cosine score threshold = 0.65 (In-domain: 0.72–0.88; Out-of-domain: 0.31–0.52) |
+| `top_k`                            | 5 |
+| Fallback threshold and calibration | Cosine score threshold = 0.30 (configured pipeline value) |
 
 ## Configurations
 
-- **Config A — dense-only:** Chỉ sử dụng Semantic Search trên ChromaDB với vector embeddings sinh bởi mô hình `BAAI/bge-m3`, truy xuất `top_k=4` chunks có cosine similarity cao nhất.
-- **Config B — hybrid + RRF:** Kết hợp đồng thời Dense Search (`top_k=8`) và Sparse BM25 Search (`top_k=8`), sau đó dung hợp thứ hạng bằng thuật toán Reciprocal Rank Fusion (RRF với tham số chuẩn $k=60$) để lấy ra `top_k=4` chunks cuối cùng đưa vào context của mô hình sinh.
+- **Config A — dense-only:** Chỉ sử dụng Semantic Search trên ChromaDB, truy xuất `top_k=5` chunks có cosine similarity cao nhất.
+- **Config B — hybrid + RRF:** Kết hợp Dense Search và Sparse BM25 Search, dung hợp thứ hạng bằng RRF ($k=60$), rồi lấy `top_k=5` chunks.
 
 Hai config phải dùng cùng golden dataset, generator, evaluator, prompt và `top_k`; chỉ thay retrieval strategy.
 
@@ -25,21 +25,22 @@ Hai config phải dùng cùng golden dataset, generator, evaluator, prompt và `
 
 | Metric            | Config A | Config B | Delta B−A |
 | ----------------- | -------: | -------: | --------: |
-| Faithfulness      |    0.852 |    0.924 |    +0.072 |
-| Answer relevance  |    0.826 |    0.895 |    +0.069 |
-| Context recall    |    0.781 |    0.887 |    +0.106 |
-| Context precision |    0.765 |    0.868 |    +0.103 |
-| **Average**       |    0.806 |   0.8935 |   +0.0875 |
+| Faithfulness      |    0.723 |    0.736 |    +0.013 |
+| Answer relevance  |    0.681 |    0.725 |    +0.044 |
+| Context recall    |    0.426 |    0.333 |    -0.093 |
+| Context precision |    0.048 |    0.040 |    -0.008 |
+| **Average**       |   0.4695 |   0.4584 |   -0.0110 |
 
 ## A/B comparison
 
-- **Cấu hình tốt hơn:** Config B (Hybrid + RRF) vượt trội rõ rệt so với Config A trên toàn bộ 4 chỉ số đo lường, đặc biệt là Context Recall (+10.6%) và Context Precision (+10.3%).
+- **Kết luận:** Config B cải thiện Faithfulness (+0.013) và Answer Relevance (+0.044), nhưng kém hơn về Context Recall (-0.093), Context Precision (-0.008) và Average (-0.0110) trong lần chạy này.
+- **Cách đo:** `evaluate_metrics.py` chạy cả 16 câu, lấy context thực tế từ retriever và tính coverage token Unicode. Đây là proxy offline, không phải điểm Ragas/LLM.
 - **Evidence:**
   - Ở các truy vấn chứa từ khóa chuyên môn hẹp, con số định lượng hoặc mã văn bản pháp lý (ví dụ: *"TOEIC 500"*, *"CPA 3.60"*, *"Nghị định 81/2021/NĐ-CP"*, *"phòng 4 người 1.200.000 đồng"*), phương pháp Dense-only thường bị phân tán ngữ nghĩa vào các đoạn giới thiệu chung về trường hoặc quy chế đào tạo nói chung. Trong khi đó, nhánh BM25 bắt chính xác 100% từ khóa cốt lõi.
   - Thuật toán RRF đã cộng hưởng thành công: đưa các đoạn văn vừa đúng từ khóa vừa tương đồng ngữ nghĩa lên vị trí Top 1–Top 2, giúp LLM nhận được đúng bằng chứng để tổng hợp câu trả lời chính xác, nâng Faithfulness từ 0.852 lên 0.924.
 - **Trade-off về latency/cost:**
-  - *Độ trễ (Latency):* Config A đạt trung bình **420ms/query**, trong khi Config B tiêu tốn **585ms/query** (+165ms do phải tính toán thêm BM25 index và thuật toán xếp hạng RRF). Mức tăng 39% này hoàn toàn nằm trong ngưỡng chấp nhận được (< 1 giây cho tầng retrieval).
-  - *Chi phí (Cost):* Vì cả 2 cấu hình đều cắt chọn đúng `top_k=4` chunks đưa vào Generator prompt, chi phí token của LLM là tương đương nhau (~1.400 đến 1.500 prompt tokens/query).
+  - *Độ trễ (Latency):* Lần chạy ghi nhận Dense **36.83s/16 queries** và Hybrid **3.71s/16 queries**; Dense bao gồm thời gian khởi tạo model embedding.
+  - *Chi phí (Cost):* Không phát sinh chi phí LLM trong benchmark offline.
 
 ## Worst performers
 
