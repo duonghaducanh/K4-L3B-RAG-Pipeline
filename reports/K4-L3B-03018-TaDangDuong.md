@@ -9,7 +9,7 @@ Báo cáo ghi nhận quyền sở hữu (ownership) và bằng chứng đóng g�
 - Họ và tên: [Họ và Tên của bạn]
 - Mã học viên: [Mã học viên của bạn]
 - Nhóm: solobolero
-- Repository/branch: `feat/llm-evaluation`
+- Repository/branch: `duong`
 - Phân công đảm nhiệm: **Mục tiêu 4 — Đánh giá chất lượng & Benchmarking (LLM-as-a-Judge Evaluation & QA)**
 
 ---
