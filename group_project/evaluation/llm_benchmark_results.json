@@ -1,0 +1,404 @@
+{
+  "dense_avg": {
+    "faithfulness": 1.0,
+    "answer_relevance": 0.7656249999999999,
+    "context_recall": 0.696875,
+    "context_precision": 0.5375,
+    "average": 0.75
+  },
+  "hybrid_avg": {
+    "faithfulness": 1.0,
+    "answer_relevance": 0.75625,
+    "context_recall": 0.5875,
+    "context_precision": 0.38749999999999996,
+    "average": 0.6828125
+  },
+  "dense_details": [
+    {
+      "id": "case_1",
+      "question": "Để đạt học bổng khuyến khích học tập loại Xuất sắc, sinh viên cần đáp ứng điều kiện gì về điểm GPA và điểm rèn luyện?",
+      "generated_answer": "Dựa trên các tài liệu được cung cấp, không có thông tin nào đề cập đến điều kiện về điểm GPA và điểm rèn luyện để đạt \"học bổng khuyến khích học tập loại Xuất sắc\". Do đó, tôi từ chối xác minh yêu cầu này.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.0,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống truy xuất nhầm các tài liệu không chứa thông tin về học bổng khuyến khích học tập (toàn là tài liệu về học bổng tài trợ, miễn giảm học phí, chuẩn đầu ra, đăng ký tín chỉ). Do ngữ cảnh truy xuất hoàn toàn thiếu thông tin, hệ thống đã từ chối trả lời một cách an toàn và trung thực với ngữ cảnh."
+      }
+    },
+    {
+      "id": "case_2",
+      "question": "Mức tiền thưởng học bổng khuyến khích học tập loại Giỏi là bao nhiêu tiền một học kỳ?",
+      "generated_answer": "Mức học bong loại Giỏi là 120% mức học phí tiêu chuẩn của học kỳ (tương đương 14.400.000 đồng/ký) [Document 3 | Title: 02 Quy Dinh Hoc Bong Khuyen Khich | Source: 02_quy_dinh_hoc_bong_khuyen_khich.md].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác và dựa trên ngữ cảnh truy xuất được. Ngữ cảnh chứa đầy đủ thông tin cần thiết (Document 3), mặc dù có các tài liệu nhiễu khác nhưng tài liệu chứa thông tin nằm ở thứ hạng cao."
+      }
+    },
+    {
+      "id": "case_3",
+      "question": "Khối lượng học tập tối thiểu và tối đa sinh viên được đăng ký trong một học kỳ chính là bao nhiêu tín chỉ?",
+      "generated_answer": "Dựa trên context được cung cấp, quy định về số tín chỉ cho sinh viên bình thường trong kỳ chính như sau:\n- Tối thiểu: 14 tín chỉ [Document 1].\n- Tối đa: 24 tín chỉ [Document 1]. \n\n*(Lưu ý: Sinh viên làm đồ án tốt nghiệp trong kỳ cuối không áp dụng mức tối thiểu 14 tín chỉ [Document 1]).*",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Hệ thống truy xuất chính xác tài liệu chứa thông tin về số tín chỉ (Document 1), câu trả lời bám sát ngữ cảnh, không bịa đặt và trả lời đúng trọng tâm câu hỏi. Ngữ cảnh truy xuất chứa một vài thông tin phụ nhưng Document 1 nằm ngay đầu và chứa đủ thông tin."
+      }
+    },
+    {
+      "id": "case_4",
+      "question": "Sinh viên có thể rút học phần đã đăng ký trong thời gian nào và có được hoàn trả học phí không?",
+      "generated_answer": "Dựa trên ngữ cảnh được cung cấp:\n\nSinh viên có thể gửi đơn xin rút học phần trực tuyến trong **2 tuần đầu của học kỳ** [Document 1]. Việc rút học phần này **không hoàn phí** [Document 1].\n\n**Citation:**\n- [Document 1 | Article 01 | Source: article_01.md]",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác, trung thực với ngữ cảnh truy xuất và trả lời đúng trọng tâm câu hỏi. Ngữ cảnh truy xuất chứa đầy đủ thông tin cần thiết (Document 1 và Document 5), mặc dù có chứa một số đoạn không liên quan ở các document khác."
+      }
+    },
+    {
+      "id": "case_5",
+      "question": "Sinh viên nghỉ học bao nhiêu phần trăm số tiết thì bị cấm thi kết thúc học phần?",
+      "generated_answer": "Sinh viên nghỉ quá 20% số tiết thì sẽ bị cấm thi học phần [Document 4].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác và dựa trên ngữ cảnh truy xuất được. Ngữ cảnh truy xuất chứa thông tin chính xác tại Document 4, dù có một vài document không liên quan nhưng document quan trọng nhất đã được lấy đúng."
+      }
+    },
+    {
+      "id": "case_6",
+      "question": "Trường hợp nào sinh viên bị áp dụng cảnh báo học tập mức 2?",
+      "generated_answer": "Sinh viên bị áp dụng cảnh báo học tập mức 2 khi bị cảnh báo học tập mức 1 ở hai học kỳ liên tiếp [Document 3 | Title: 01 Quy Che Dao Tao Dai Hoc | Source: 01_quy_che_dao_tao_dai_hoc.md].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác, dựa đúng vào ngữ cảnh truy xuất (Document 3 chứa thông tin chuẩn xác). Ngữ cảnh truy xuất chứa đầy đủ thông tin cần thiết nhưng có một số document nhiễu không liên quan."
+      }
+    },
+    {
+      "id": "case_7",
+      "question": "Những đối tượng sinh viên nào được miễn 100% học phí theo quy định?",
+      "generated_answer": "Dựa trên Document 1, các đối tượng sinh viên được miễn 100% học phí bao gồm:\n- Con liệt sĩ [Document 1]\n- Con thương binh bệnh binh nặng [Document 1]\n- Sinh viên khuyết tật [Document 1]\n- Sinh viên mồ côi cả cha và mẹ [Document 1]",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 0.65,
+        "context_precision": 0.6,
+        "reason": "Câu trả lời hoàn toàn dựa trên ngữ cảnh truy xuất (faithful) và trả lời đúng trọng tâm câu hỏi. Ngữ cảnh truy xuất chứa thông tin ở Document 1 và Document 5, tuy nhiên thiếu một số chi tiết so với ngữ cảnh chuẩn (như dân tộc thiểu số rất ít người)."
+      }
+    },
+    {
+      "id": "case_8",
+      "question": "Sinh viên là con của cán bộ, công nhân viên chức bị tai nạn lao động được giảm bao nhiêu phần trăm học phí?",
+      "generated_answer": "Sinh viên là con cán bộ viên chức mà bố hoặc mẹ bị tai nạn lao động hưởng trợ cấp thường xuyên được giảm 50% học phí [Document 1].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác, trung thực dựa trên ngữ cảnh truy xuất và giải quyết đúng câu hỏi. Ngữ cảnh truy xuất chứa đầy đủ thông tin cần thiết nhưng có một số tài liệu không liên quan (Article 01, Article 02)."
+      }
+    },
+    {
+      "id": "case_9",
+      "question": "Thời hạn nộp học phí mỗi học kỳ là bao lâu và nếu không nộp đúng hạn thì bị xử lý như thế nào?",
+      "generated_answer": "Dựa trên context được cung cấp, không có thông tin về thời hạn nộp học phí mỗi học kỳ cũng như cách xử lý khi không nộp đúng hạn. Do đó, tôi từ chối xác minh câu hỏi này.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.2,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống từ chối trả lời một cách chính xác vì ngữ cảnh truy xuất không chứa thông tin về thời hạn nộp học phí (faithfulness cao). Tuy nhiên do ngữ cảnh truy xuất bị thiếu thông tin nên context_recall và context_precision đều bằng 0, và câu trả lời không giải quyết được câu hỏi đặt ra."
+      }
+    },
+    {
+      "id": "case_10",
+      "question": "Giá thuê phòng ký túc xá loại 4 người khép kín có điều hòa là bao nhiêu tiền một tháng?",
+      "generated_answer": "Giá thuê phòng ký túc xá loại 4 người khép kín (có điều hòa, bình nóng lạnh) là 1.200.000 VNĐ/người/tháng [Document 1].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác và dựa trên ngữ cảnh truy xuất được. Ngữ cảnh truy xuất chứa đầy đủ thông tin (Document 1) nhưng có kèm theo các tài liệu không liên quan khác ở các Document còn lại."
+      }
+    },
+    {
+      "id": "case_11",
+      "question": "Giờ mở cửa và đóng cửa sinh hoạt hàng ngày của Ký túc xá là mấy giờ?",
+      "generated_answer": "Dựa trên context được cung cấp, không có thông tin nào đề cập đến giờ mở cửa và đóng cửa sinh hoạt hàng ngày của Ký túc xá. Do đó, tôi từ chối xác minh yêu cầu này.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.0,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống truy xuất nhầm các tài liệu không chứa thông tin về giờ mở cửa KTX (context_recall = 0, context_precision = 0). Do không có ngữ cảnh phù hợp, câu trả lời từ chối chính xác dựa trên ngữ cảnh được cung cấp (faithfulness = 1.0), nhưng không giải quyết được câu hỏi (answer_relevance = 0)."
+      }
+    },
+    {
+      "id": "case_12",
+      "question": "Sinh viên tốt nghiệp chương trình chuẩn cần đạt chuẩn đầu ra ngoại ngữ TOEIC tối thiểu bao nhiêu điểm?",
+      "generated_answer": "Sinh viên tốt nghiệp chương trình Cử nhân/Kỹ sư chuẩn cần đạt chứng chỉ TOEIC 4 kỹ năng tối thiểu **500 điểm** [Document 1 | Title: Article 05 | Source: article_05.md].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác dựa trên ngữ cảnh được truy xuất. Ngữ cảnh truy xuất chứa đầy đủ thông tin cần thiết (Document 1) cùng với một số tài liệu khác ít liên quan hơn."
+      }
+    },
+    {
+      "id": "case_13",
+      "question": "Học bổng Tài năng Công nghệ Viettel và Samsung STP có giá trị bao nhiêu và yêu cầu điều kiện gì?",
+      "generated_answer": "Dựa trên các tài liệu được cung cấp, giá trị và điều kiện/quyền lợi đi kèm của hai gói học bổng như sau:\n\n* **Học bổng Tài năng Công nghệ Viettel:** \n  - Giá trị: 50.000.000 VNĐ/suất [Document 1].\n  - Điều kiện/Quyền lợi đi kèm: Kèm cam kết thực tập tại viện nghiên cứu [Document 1].\n\n* **Học bổng Samsung Talent Program (STP):** \n  - Giá trị: 30.000.000 VNĐ/suất [Document 1].\n  - Điều kiện/Quyền lợi đi kèm: Cùng khóa đào tạo thuật toán chuyên sâu [Document 1].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.85,
+        "context_recall": 0.5,
+        "context_precision": 0.4,
+        "reason": "Câu trả lời trung thành với ngữ cảnh truy xuất nhưng còn thiếu phần điều kiện điểm CPA và điểm rèn luyện do ngữ cảnh thiếu sót. Ngữ cảnh truy xuất chứa một số tài liệu không liên quan về giá phòng, quy định tín chỉ."
+      }
+    },
+    {
+      "id": "case_14",
+      "question": "Sinh viên phải nộp hồ sơ đề nghị miễn giảm học phí trước tuần thứ mấy của học kỳ?",
+      "generated_answer": "Dựa trên context được cung cấp, không có thông tin nào nêu rõ sinh viên phải nộp hồ sơ đề nghị miễn giảm học phí trước \"tuần thứ mấy\" của học kỳ (tài liệu chỉ quy định hạn nộp là trước ngày 10/10/2024) [Document 1]. Do thiếu evidence, tôi từ chối xác minh câu hỏi này.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.2,
+        "context_recall": 0.0,
+        "context_precision": 0.2,
+        "reason": "Hệ thống từ chối trả lời chính xác dựa trên ngữ cảnh thiếu thông tin về 'tuần thứ mấy' (ngữ cảnh hệ thống chỉ có ngày 10/10/2024 trong khi ngữ cảnh chuẩn có thông tin tuần thứ 3), điều này thể hiện tính trung thực cao (faithfulness). Tuy nhiên context recall thấp do retrieval không lấy được đúng đoạn chứa thông tin tuần thứ 3."
+      }
+    },
+    {
+      "id": "case_15",
+      "question": "Mức học phí theo năm của trường Đại học Harvard tại Mỹ là bao nhiêu đô la?",
+      "generated_answer": "Dựa trên context được cung cấp, không có thông tin nào đề cập đến mức học phí theo năm của trường Đại học Harvard tại Mỹ. Do đó, tôi từ chối xác minh thông tin này.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 1.0,
+        "reason": "Câu hỏi nằm ngoài phạm vi tài liệu (out-of-domain). Hệ thống đã nhận diện chính xác và thực hiện từ chối an toàn hợp lý (fallback/safe refusal), đồng thời các ngữ cảnh truy xuất không chứa thông tin về Đại học Harvard như mong đợi."
+      }
+    },
+    {
+      "id": "case_16",
+      "question": "Cách nấu phở bò gia truyền Hà Nội cần những nguyên liệu và gia vị gì?",
+      "generated_answer": "Tôi xin từ chối xác minh vì thông tin này không có trong các tài liệu được cung cấp.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.0,
+        "reason": "Câu hỏi nằm ngoài phạm vi tài liệu, ngữ cảnh truy xuất là nhiễu, hệ thống đã thực hiện từ chối an toàn (fallback/safe refusal) chính xác."
+      }
+    }
+  ],
+  "hybrid_details": [
+    {
+      "id": "case_1",
+      "question": "Để đạt học bổng khuyến khích học tập loại Xuất sắc, sinh viên cần đáp ứng điều kiện gì về điểm GPA và điểm rèn luyện?",
+      "generated_answer": "Dựa trên các tài liệu được cung cấp, không có thông tin nào đề cập đến \"học bổng khuyến khích học tập loại Xuất sắc\" hay các điều kiện cụ thể về điểm GPA và điểm rèn luyện để đạt loại học bổng này. Do đó, tôi từ chối xác minh yêu cầu trên vì thiếu bằng chứng trong context.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.2,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Ngữ cảnh truy xuất được hoàn toàn không chứa thông tin về học bổng khuyến khích học tập loại Xuất sắc. Hệ thống trả lời từ chối cung cấp thông tin là trung thực với ngữ cảnh (faithfulness cao). Tuy nhiên, ngữ cảnh truy xuất hoàn toàn sai lệch (context_recall và context_precision bằng 0) khiến câu trả lời không giải quyết được câu hỏi."
+      }
+    },
+    {
+      "id": "case_2",
+      "question": "Mức tiền thưởng học bổng khuyến khích học tập loại Giỏi là bao nhiêu tiền một học kỳ?",
+      "generated_answer": "Từ chối xác minh vì ngữ cảnh được cung cấp không chứa thông tin về mức tiền thưởng của học bổng khuyến khích học tập loại Giỏi.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống truy xuất nhầm các tài liệu về học bổng doanh nghiệp và miễn giảm học phí nên không chứa thông tin trả lời. Câu trả lời của hệ thống từ chối trả lời chính xác dựa trên ngữ cảnh được cung cấp."
+      }
+    },
+    {
+      "id": "case_3",
+      "question": "Khối lượng học tập tối thiểu và tối đa sinh viên được đăng ký trong một học kỳ chính là bao nhiêu tín chỉ?",
+      "generated_answer": "Dựa trên context được cung cấp, quy định về số tín chỉ trong kỳ chính như sau:\n\n* **Sinh viên bình thường:** Tối thiểu 14 tín chỉ, tối đa 24 tín chỉ trong kỳ chính [Document 1].\n* **Sinh viên làm đồ án tốt nghiệp trong kỳ cuối:** Không áp dụng mức tối thiểu 14 tín chỉ [Document 1].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.85,
+        "context_recall": 0.8,
+        "context_precision": 0.7,
+        "reason": "Câu trả lời hoàn toàn dựa trên ngữ cảnh truy xuất (faithfulness = 1.0). Tuy nhiên, ngữ cảnh và câu trả lời chưa bao quát đầy đủ trường hợp sinh viên học kỳ cuối hoặc cảnh báo học tập như Expected Answer (thiếu một phần). Ngữ cảnh chứa một số tài liệu không liên quan (context_precision ở mức trung bình)."
+      }
+    },
+    {
+      "id": "case_4",
+      "question": "Sinh viên có thể rút học phần đã đăng ký trong thời gian nào và có được hoàn trả học phí không?",
+      "generated_answer": "Dựa trên ngữ cảnh được cung cấp, sinh viên có thể gửi đơn xin rút học phần trực tuyến trong **2 tuần đầu của học kỳ** và việc rút học phần này **không hoàn phí** [Document 1 | Article 01].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác, trung thực với ngữ cảnh truy xuất và giải quyết trực tiếp câu hỏi. Ngữ cảnh chuẩn được bao phủ đầy đủ (Document 1 chứa thông tin cần thiết), tuy nhiên có một số document nhiễu không liên quan được truy xuất kèm theo."
+      }
+    },
+    {
+      "id": "case_5",
+      "question": "Sinh viên nghỉ học bao nhiêu phần trăm số tiết thì bị cấm thi kết thúc học phần?",
+      "generated_answer": "Sinh viên nghỉ quá 20% số tiết học sẽ bị cấm thi học phần đó [Document 3].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn dựa vào ngữ cảnh, giải quyết chính xác câu hỏi. Ngữ cảnh truy xuất chứa đầy đủ thông tin chuẩn (Document 3) mặc dù có xuất hiện một số document không liên quan."
+      }
+    },
+    {
+      "id": "case_6",
+      "question": "Trường hợp nào sinh viên bị áp dụng cảnh báo học tập mức 2?",
+      "generated_answer": "Dựa trên các context được cung cấp, không có thông tin nào giải thích về việc sinh viên bị áp dụng cảnh báo học tập mức 2 (Context chỉ đề cập đến việc sinh viên bị cảnh báo học tập mức 1 hoặc mức 2 được đăng ký tối đa 18 tín chỉ/kỳ) [Document 1]. Do đó, tôi từ chối xác minh trường hợp gây ra cảnh báo học tập mức 2 vì thiếu evidence.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.2,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống truy xuất nhầm tài liệu, không chứa thông tin về điều kiện cảnh báo học tập mức 2. Do đó hệ thống sinh ra câu trả lời từ chối cung cấp thông tin là trung thực với ngữ cảnh truy xuất (faithfulness cao), nhưng ngữ cảnh truy xuất hoàn toàn thiếu thông tin chuẩn (context_recall và context_precision bằng 0) và câu trả lời không giải quyết được câu hỏi (answer_relevance thấp)."
+      }
+    },
+    {
+      "id": "case_7",
+      "question": "Những đối tượng sinh viên nào được miễn 100% học phí theo quy định?",
+      "generated_answer": "Dựa trên tài liệu được cung cấp, các đối tượng sinh viên được miễn 100% học phí bao gồm:\n- Con liệt sĩ [Document 1 | Title: Article 03 | Source: article_03.md].\n- Con thương binh bệnh binh nặng [Document 1 | Title: Article 03 | Source: article_03.md].\n- Sinh viên khuyết tật [Document 1 | Title: Article 03 | Source: article_03.md].\n- Sinh viên mồ côi cả cha và mẹ [Document 1 | Title: Article 03 | Source: article_03.md].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.85,
+        "context_recall": 0.6,
+        "context_precision": 0.7,
+        "reason": "Câu trả lời hoàn toàn dựa trên ngữ cảnh được truy xuất và trả lời đúng câu hỏi (dù ngữ cảnh bị thiếu một số đối tượng chi tiết so với ngữ cảnh chuẩn). Ngữ cảnh truy xuất chứa thông tin đúng ở Document 1 nhưng có kèm theo các document không liên quan (như ký túc xá, học bổng)."
+      }
+    },
+    {
+      "id": "case_8",
+      "question": "Sinh viên là con của cán bộ, công nhân viên chức bị tai nạn lao động được giảm bao nhiêu phần trăm học phí?",
+      "generated_answer": "Sinh viên là con cán bộ viên chức mà bố hoặc mẹ bị tai nạn lao động hưởng trợ cấp thường xuyên được giảm 50% học phí [Document 1].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Hệ thống truy xuất chính xác ngữ cảnh chứa thông tin trả lời, câu trả lời hoàn toàn trung thực với ngữ cảnh và giải quyết chính xác câu hỏi. Ngữ cảnh chứa một số đoạn không liên quan (về đăng ký học phần) nhưng các đoạn chính chứa thông tin đã được trích xuất tốt."
+      }
+    },
+    {
+      "id": "case_9",
+      "question": "Thời hạn nộp học phí mỗi học kỳ là bao lâu và nếu không nộp đúng hạn thì bị xử lý như thế nào?",
+      "generated_answer": "Dựa trên context được cung cấp, không có thông tin nào đề cập đến thời hạn nộp học phí mỗi học kỳ là bao lâu và việc không nộp đúng hạn sẽ bị xử lý như thế nào. Do đó, tôi từ chối xác minh câu hỏi này.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.0,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống truy xuất không chứa thông tin về thời hạn nộp học phí và xử lý vi phạm. Câu trả lời của hệ thống đã từ chối đúng dựa trên ngữ cảnh cung cấp (Faithfulness cao), tuy nhiên không giải quyết được câu hỏi do ngữ cảnh truy xuất bị thiếu hoàn toàn (Context recall = 0, Context precision = 0, Answer relevance thấp)."
+      }
+    },
+    {
+      "id": "case_10",
+      "question": "Giá thuê phòng ký túc xá loại 4 người khép kín có điều hòa là bao nhiêu tiền một tháng?",
+      "generated_answer": "Giá thuê phòng ký túc xá loại 4 người khép kín (có điều hòa, bình nóng lạnh) là 1.200.000 VNĐ/người/tháng [Document 1].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác và dựa trên ngữ cảnh truy xuất được. Ngữ cảnh truy xuất chứa đầy đủ thông tin chuẩn (Document 1) cùng với các tài liệu phụ không quá nhiễu."
+      }
+    },
+    {
+      "id": "case_11",
+      "question": "Giờ mở cửa và đóng cửa sinh hoạt hàng ngày của Ký túc xá là mấy giờ?",
+      "generated_answer": "Dựa trên context được cung cấp, không có thông tin nào đề cập đến giờ mở cửa và đóng cửa sinh hoạt hàng ngày của Ký túc xá. Do đó, tôi từ chối xác minh câu hỏi này do thiếu evidence.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.5,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống từ chối trả lời chính xác vì ngữ cảnh truy xuất không chứa thông tin về giờ mở cửa/đóng cửa của KTX (faithfulness cao). Tuy nhiên, ngữ cảnh truy xuất hoàn toàn không liên quan (context_recall và context_precision bằng 0) dẫn đến việc không thể giải quyết câu hỏi (answer_relevance thấp)."
+      }
+    },
+    {
+      "id": "case_12",
+      "question": "Sinh viên tốt nghiệp chương trình chuẩn cần đạt chuẩn đầu ra ngoại ngữ TOEIC tối thiểu bao nhiêu điểm?",
+      "generated_answer": "Dựa vào tài liệu, sinh viên chương trình Cử nhân/Kỹ sư chuẩn cần đạt chứng chỉ TOEIC 4 kỹ năng tối thiểu 500 điểm [Document 1 | Article 05].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác và dựa trên ngữ cảnh truy xuất được. Ngữ cảnh truy xuất chứa đầy đủ thông tin cần thiết (Document 1 và Document 5), mặc dù có kèm theo một số tài liệu không liên quan ở các document khác nhưng thông tin cốt lõi xuất hiện ở phần đầu."
+      }
+    },
+    {
+      "id": "case_13",
+      "question": "Học bổng Tài năng Công nghệ Viettel và Samsung STP có giá trị bao nhiêu và yêu cầu điều kiện gì?",
+      "generated_answer": "Dựa trên các tài liệu được cung cấp, giá trị và điều kiện của các học bổng như sau:\n\n**1. Giá trị học bổng:**\n* **Học bổng Tài năng Công nghệ Viettel:** 50.000.000 VNĐ/suất kèm cam kết thực tập tại viện nghiên cứu [Document 1].\n* **Học bổng Samsung Talent Program (STP):** 30.000.000 VNĐ/suất cùng khóa đào tạo thuật toán chuyên sâu [Document 1].\n\n**2. Điều kiện nộp hồ sơ (áp dụng chung cho các gói học bổng):**\n* Điểm trung bình tích lũy CPA từ 3.20 trở lên [Document 3].\n* Điểm rèn luyện học kỳ gần nhất đạt từ 80 điểm trở lên (Loại Tốt) [Document 3].\n* Có công trình nghiên cứu khoa học hoặc giải thưởng Olympic sinh viên là một lợi thế lớn [Document 3].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.8,
+        "reason": "Câu trả lời hoàn toàn chính xác, trung thành với ngữ cảnh truy xuất và trả lời đúng trọng tâm câu hỏi. Ngữ cảnh truy xuất chứa đầy đủ thông tin cần thiết nhưng có chứa một số tài liệu không liên quan về ký túc xá (Document 2 và 4)."
+      }
+    },
+    {
+      "id": "case_14",
+      "question": "Sinh viên phải nộp hồ sơ đề nghị miễn giảm học phí trước tuần thứ mấy của học kỳ?",
+      "generated_answer": "Dựa trên context được cung cấp, không có thông tin nào đề cập đến việc sinh viên phải nộp hồ sơ đề nghị miễn giảm học phí trước tuần thứ mấy của học kỳ (tài liệu chỉ nêu hạn nộp là trước ngày 10/10/2024) [Document 1]. Do đó, tôi từ chối xác minh câu hỏi này do thiếu evidence.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.5,
+        "context_recall": 0.0,
+        "context_precision": 0.0,
+        "reason": "Hệ thống từ chối trả lời chính xác dựa trên ngữ cảnh thiếu thông tin (chỉ nêu hạn chót theo ngày thay vì theo tuần). Tuy nhiên, ngữ cảnh truy xuất không chứa thông tin 'trước tuần thứ 3' (context_recall = 0) và chứa nhiều thông tin không liên quan (context_precision thấp)."
+      }
+    },
+    {
+      "id": "case_15",
+      "question": "Mức học phí theo năm của trường Đại học Harvard tại Mỹ là bao nhiêu đô la?",
+      "generated_answer": "Dựa trên các tài liệu được cung cấp, không có thông tin nào đề cập đến mức học phí theo năm của trường Đại học Harvard tại Mỹ. Do đó, tôi từ chối xác minh câu hỏi này do thiếu evidence [Document 1, Document 2, Document 3, Document 4, Document 5].",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.0,
+        "reason": "Câu hỏi nằm ngoài phạm vi tài liệu (out of domain). Hệ thống truy xuất được các tài liệu không liên quan (về học bổng, đăng ký học phần, chuẩn đầu ra), nhưng đã thực hiện cơ chế từ chối an toàn chính xác, trung thực dựa trên ngữ cảnh và trả lời đúng trọng tâm câu hỏi."
+      }
+    },
+    {
+      "id": "case_16",
+      "question": "Cách nấu phở bò gia truyền Hà Nội cần những nguyên liệu và gia vị gì?",
+      "generated_answer": "Tôi xin từ chối xác minh vì thông tin về cách nấu phở bò gia truyền Hà Nội không có trong các tài liệu được cung cấp.",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_recall": 1.0,
+        "context_precision": 0.0,
+        "reason": "Câu hỏi thuộc phạm vi ngoài tài liệu, ngữ cảnh truy xuất là nhiễu nhưng hệ thống đã thực hiện cơ chế từ chối an toàn (safe refusal) chính xác và trung thực."
+      }
+    }
+  ]
+}
